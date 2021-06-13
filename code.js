@@ -16,6 +16,17 @@ window.onload = (()=>{
 
     const MEMORY_SIZE = 65536;
 
+    const A = 0x0000;
+    const B = 0x0001;
+    const C = 0x0002;
+    const D = 0x0003;
+    const E = 0x0004;
+    const F = 0x0005;
+    const H = 0x0006;
+    const L = 0x0007;
+
+    let PC = 0x4000;
+
     let buffer = new ArrayBuffer(MEMORY_SIZE);
     let memory = new Uint8Array(buffer);
 
@@ -134,6 +145,52 @@ window.onload = (()=>{
     // memory[0xc000] = 0x80;//start position in video;
     // memory[0xc001] = 0x88;
     // memory[0xfe7f] = 0xff; // last position in video;
+    //
+    //
+    function get_address()
+    {
+        return (memory[PC+1] << 8) | memory[PC];
+    }
+
+    function LDAN()
+    {
+        memory[A]= memory[PC];
+        PC+=1;
+    }
+
+    function LDNNA()
+    {
+        memory[get_address()] = memory[A];
+        PC+=2;
+    }
+
+    function JRN()
+    {
+        return;
+    }
+
+    let instructions = []
+
+    // instructions.push(LDA);
+    instructions[0x3e] = LDAN;
+    instructions[0x32] = LDNNA;
+    instructions[0x18] = JRN;
+
+    memory[PC] = 0x3e;
+    memory[PC+1] = 0xca;
+    memory[PC+2] = 0x32;
+    memory[PC+3] = 0x00;
+    memory[PC+4] = 0xc0;
+    memory[PC+5] = 0x18;
+
+    let opcode = 0x00;
+    do
+    {
+        opcode = memory[PC];
+        PC+=1;
+
+        instructions[opcode]();
+    }while(opcode != 0x18);
 
     read_memory_video();
 
