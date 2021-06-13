@@ -14,8 +14,20 @@ window.onload = (()=>{
 
     const screenData = context.getImageData(0,0,width,height);
 
+    const MEMORY_SIZE = 65536;
+
+    let buffer = new ArrayBuffer(MEMORY_SIZE);
+    let memory = new Uint8Array(buffer);
+
     let data = screenData.data;
-    
+
+    init_machine();
+
+    function init_machine()
+    {
+        for(let i = 0; i < MEMORY_SIZE; i++)
+            memory[i] = 0x00;
+    }
 
     function put_pixel(pos,r = 0,g = 0,b = 0)
     {
@@ -107,7 +119,23 @@ window.onload = (()=>{
         put_pointer_position(lx+3,posY,pixels[3][0],pixels[3][1],pixels[3][2]);
     }
 
-    draw_pixels(0,1,0xca);
+    function read_memory_video()
+    {
+        for(let y = 0; y < 200; y++)
+        {
+            for(let x = 0; x < 80; x++)
+            {
+                // console.log(0xc000 + (x+(y*80)));
+                draw_pixels(x,y,memory[(0xc000 + (x+(y*80)))])
+            }
+        }
+    }
+        
+    // memory[0xc000] = 0x80;//start position in video;
+    // memory[0xc001] = 0x88;
+    // memory[0xfe7f] = 0xff; // last position in video;
+
+    read_memory_video();
 
     context.putImageData(screenData,0,0);
 })();
