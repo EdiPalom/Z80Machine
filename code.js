@@ -28,6 +28,9 @@ window.onload = (()=>{
 
     function put_pointer_position(x,y,r,g,b)
     {
+        // console.time('test');
+        // time of execution 2ms
+
         let lx = x * pixel_size;
         let ly = y * pixel_size;
         // let ly = Math.trunc(p/* o */s/320);
@@ -39,10 +42,14 @@ window.onload = (()=>{
                 put_pixel(x+(width * y),r,g,b)
             }
         }
+
+        // console.timeEnd('test');
     }
 
     function put_pointer_index(index,r,g,b)
     {
+        // console.time('test');
+        // time of execution 3ms
         let lx = (index % pixels_width) * pixel_size;
         let ly = Math.trunc(index / pixels_width) * pixel_size;
 
@@ -53,23 +60,55 @@ window.onload = (()=>{
                 put_pixel(x+(width * y),r,g,b)
             }
         }
+
+        // console.timeEnd('test');
     }
 
-    // put_pointer_position(0,0,255,0,0);
-    // put_pointer_position(1,0,0,255,0);
-    // put_pointer_position(0,199,0,0,255);
+    function get_pixel_color(opc)
+    {
+        if(opc == 0x11)
+            return [247,0,0];
+        if(opc == 0x10)
+            return [247,247,0];
+        if(opc == 0x01)
+            return [0,254,254];
+        if(opc == 0x00)
+            return [0,39,251];
+        
+        return [0,0,0]
+    }
 
-    // put_pointer(3,3,255,0,0);
+    function get_colors(Byte)
+    {
+        let pixels = []
+
+        for (let j = 3; j >= 0; --j)
+        {
+            let opcode = (Byte>>j)&0x11;
+            let color = get_pixel_color(opcode);
+            pixels.push(color);
+        }
+        
+        return pixels;
+    }
+
     // put_pointer_index(320 * 199,255,0,0);
-    // put_pointer_index(640,255,0,0);
-    // put_pointer_index(0,255,0,0);
-    // put_pointer_index(320,0,255,0);
-
-    // put_pointer(199 * 320,255,0,0);
-    // put_pointer(0,255,0,0);
-    // put_pointer(320,255,0,0);
-    // put_pointer(640,0,255,0);
+    // put_pointer_position(0,199,0,255,0);
     
+    function draw_pixels(posX,posY,Byte)
+    {
+        let lx = posX * 4;
+
+        let pixels = get_colors(Byte);
+        
+        put_pointer_position(lx,posY,pixels[0][0],pixels[0][1],pixels[0][2]);
+        put_pointer_position(lx + 1,posY,pixels[1][0],pixels[1][1],pixels[1][2]);
+        put_pointer_position(lx+2,posY,pixels[2][0],pixels[2][1],pixels[2][2]);
+        put_pointer_position(lx+3,posY,pixels[3][0],pixels[3][1],pixels[3][2]);
+    }
+
+    draw_pixels(0,1,0xca);
+
     context.putImageData(screenData,0,0);
 })();
 
