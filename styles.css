@@ -6,9 +6,11 @@
 
 p{
     display:inline-block;
-    margin: 2px 5px;
-    font-size: 20px;
+    font-size: 17px;
     font-family:'8bit';
+    padding: 3px;
+    border-radius:2px;
+    margin:0px;
 }
 
 h2
@@ -48,10 +50,29 @@ ul li
     background-color:#292b2c;
     color:white;
     width:923px;
+    height:30px;
     padding:5px 20px;
     border:0px;
-    display:inline-block;
+    display:block;
+    /* display:inline-block; */
     font-family:'8bit';
+}
+
+#memdisplay
+{
+    /* position:relative; */
+    /* display:inline; */
+    /* float:right; */
+    width:960px;
+    display:inline-block;
+}
+
+.byte
+{
+    margin: 2px 4px;
+    width:47px;
+    display:inline-block;
+    text-align:center;
 }
 
 .container

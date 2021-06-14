@@ -97,7 +97,7 @@ var Machine = function(){
         if(opc == 0x01)
             return [0,254,254];
         if(opc == 0x00)
-            return [0,39,251];
+            return [0,0,128];
         
         return [0,0,0]
     };
