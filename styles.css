@@ -13,6 +13,13 @@ p{
     margin:0px;
 }
 
+input
+{
+    font-family:'8bit';
+}
+
+
+
 h2
 {
     border:0px;
@@ -40,10 +47,12 @@ ul li
     border:1px solid;
 }
 
-#edit-mem
-{
-    visibility:hidden;
-}
+
+
+/* #edit-mem */
+/* { */
+/*     visibility:hidden; */
+/* } */
 
 #bar
 {
@@ -73,6 +82,16 @@ ul li
     width:47px;
     display:inline-block;
     text-align:center;
+}
+
+.button{
+    background-color:#007BFF;
+    padding:3px;
+    border-radius:3px;
+}
+
+.button:hover{
+    background-color: #28A745;
 }
 
 .container

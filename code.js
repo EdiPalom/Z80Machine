@@ -9,10 +9,22 @@ window.onload = (()=>{
     //
     // let mac = Machine("Hello");
     //
-    MemGUI.fill(Machine.get_memory(0x4000),0x4000);
+    // MemGUI.fill(Machine.get_memory(0x4000),0x4000);
+    show_memory(0x4000);
 
     Machine.read_memory_video();
     Machine.update_canvas();
+
+    window.get_gaddress = ()=>{
+        let a = document.getElementById("go").value;
+        show_memory(a);
+    }
+
+    function show_memory(address)
+    {
+        address = Number(address);
+        MemGUI.fill(Machine.get_memory(address),address);
+    }
 
     // // //
     // //

@@ -57,6 +57,7 @@ var MemGUI = function()
     }
 
     const fill = (memory,address)=>{
+        surface.innerHTML = "";
 
         let counter = 0;
 
