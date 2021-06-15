@@ -58,16 +58,16 @@ var MemGUI = function()
 
     const fill = (memory,address)=>{
         surface.innerHTML = "";
-
-        let counter = 0;
-
-        let p = "<p>" + address.toString(16) + "</p>";
-        surface.innerHTML = p;
+      
+        let p = document.createElement("P");
+        p.textContent = address.toString(16);
+        // let p = "<p>" + address.toString(16) + "</p>";
+        surface.appendChild(p);
 
         memory.forEach(
-            element=>{
+            (element,index)=>{
 
-                let id = (address+counter);
+                let id = (address+index);
 
                 let number = dec_to_hex(element);
 
@@ -83,13 +83,17 @@ var MemGUI = function()
                 b.appendChild(para2);
 
                 surface.appendChild(b);
-
-                counter +=1;
             });
     };
 
+    const get_content = ()=>
+    {
+        return surface.innerText;
+    };
+
     return{
-        fill
+        fill,
+        get_content
     }
 
 }();

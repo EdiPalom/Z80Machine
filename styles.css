@@ -39,7 +39,7 @@ ul li
     display:inline-block;
     list-style-type:none;
     float:right;
-    padding-left:5px;
+    padding:3px 3px;
 }
 
 #canvas
@@ -47,7 +47,10 @@ ul li
     border:1px solid;
 }
 
-
+/* #goto */
+/* { */
+/*     padding-top:5px; */
+/* } */
 
 /* #edit-mem */
 /* { */

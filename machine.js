@@ -167,8 +167,6 @@ var Machine = function(){
     instructions[0x32] = LDNNA;
     instructions[0x18] = JRN;
 
-    memory[0x4000] = 0xFF;
-
     const get_memory = (address)=>{
         let mem = []
     
@@ -176,12 +174,20 @@ var Machine = function(){
             mem.push(memory[address+i]);
 
         return mem;
-    }
+    };
+
+    const set_memory = (address,data)=>{
+        for(let i = 0; i < 16; i++)
+        {
+            memory[address+i] = data[i];
+        }
+    };
     
     return {
         update_canvas,
         read_memory_video,
-        get_memory
+        get_memory,
+        set_memory
     }
 
 }();
