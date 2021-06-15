@@ -11,9 +11,7 @@ window.onload = (()=>{
     //
     // MemGUI.fill(Machine.get_memory(0x4000),0x4000);
     show_memory(0x4000);
-
-    Machine.read_memory_video();
-    Machine.update_canvas();
+    // draw();
 
     window.get_gaddress = ()=>{
         let a = document.getElementById("go").value;
@@ -44,6 +42,29 @@ window.onload = (()=>{
     {
         address = Number(address);
         MemGUI.fill(Machine.get_memory(address),address);
+    };
+
+    // window.run = ()=>{
+    //     Machine.read_program();
+    // };
+
+    function draw()
+    {
+        Machine.raster();
+        Machine.update_canvas();
+    };
+
+    let app;
+
+    window.run = ()=>{
+        app = setInterval(()=>{
+            Machine.read_program();
+            draw();
+        },128);
+    };
+
+    window.stop = ()=>{
+        clearInterval(app);
     };
 
     // // //

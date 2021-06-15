@@ -129,7 +129,7 @@ var Machine = function(){
         put_pointer_position(lx+3,posY,pixels[3][0],pixels[3][1],pixels[3][2]);
     };
 
-    const read_memory_video = ()=>{
+    const raster = ()=>{
         for(let y = 0; y < 200; y++)
         {
             for(let x = 0; x < 80; x++)
@@ -139,7 +139,7 @@ var Machine = function(){
             }
         }
     };
-
+    
     const update_canvas = ()=>{
         context.putImageData(screenData,0,0);
     };
@@ -162,10 +162,29 @@ var Machine = function(){
         return;
     };
 
+    const JPNN = ()=>{
+        PC = get_address();
+    };
+
     // instructions.push(LDA);
     instructions[0x3e] = LDAN;
     instructions[0x32] = LDNNA;
     instructions[0x18] = JRN;
+    instructions[0xc3] = JPNN;
+
+    const read_program = ()=>{
+        // let opcode = 0x00;
+        // do
+        // {
+        let opcode = memory[PC];
+        console.log(opcode,PC);
+        PC += 1;
+        instructions[opcode]();
+        
+        // }while(opcode != 0x18);
+
+        // PC = 0x4000;
+    };
 
     const get_memory = (address)=>{
         let mem = []
@@ -185,9 +204,10 @@ var Machine = function(){
     
     return {
         update_canvas,
-        read_memory_video,
+        raster,
         get_memory,
-        set_memory
+        set_memory,
+        read_program
     }
 
 }();
