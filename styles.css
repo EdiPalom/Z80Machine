@@ -18,17 +18,19 @@ input
     font-family:'8bit';
 }
 
-h2
+h3
 {
     border:0px;
     margin:0px;
     padding:0px;
-    float:left;
-    width:100px;
+    /* float:left; */
+    /* width:200px; */
+    display:inline;
 }
 
 ul
 {
+    display:inline;
     margin:0px;
 }
 
@@ -44,6 +46,8 @@ ul li
 {
     border:1px solid;
 }
+
+
 
 #machine-gui
 {
@@ -75,8 +79,8 @@ ul li
     height:30px;
     padding:5px 20px;
     border:0px;
-    display:block;
-    /* display:inline-block; */
+    /* display:block; */
+    display:inline-block;
     font-family:'8bit';
 }
 
@@ -91,10 +95,11 @@ ul li
 
 .byte
 {
-    margin: 2px 4px;
-    width:47px;
+    margin: 2px 3px;
+    /* width:15px; */
     display:inline-block;
     text-align:center;
+    border:0px;
 }
 
 .button{

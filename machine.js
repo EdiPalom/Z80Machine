@@ -177,7 +177,7 @@ var Machine = function(){
         // do
         // {
         let opcode = memory[PC];
-        console.log(opcode,PC);
+        // console.log(opcode,PC);
         PC += 1;
         instructions[opcode]();
         
@@ -207,7 +207,8 @@ var Machine = function(){
         raster,
         get_memory,
         set_memory,
-        read_program
+        read_program,
+        reset:init_machine,
     }
 
 }();
