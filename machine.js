@@ -233,6 +233,10 @@ var Machine = function(){
             memory[address+i] = data[i];
         }
     };
+
+    const set_pc = (address)=>{
+        PC = Number(address);
+    };
     
     return {
         update_canvas,
@@ -241,6 +245,7 @@ var Machine = function(){
         set_memory,
         read_program,
         reset:init_machine,
+        set_pc
     }
 
 }();

@@ -16,6 +16,7 @@ p{
 input
 {
     font-family:'8bit';
+    width:100px;
 }
 
 h3
@@ -34,11 +35,19 @@ ul
     margin:0px;
 }
 
-ul li
+#mem-list
 {
+    float:right;
+}
+
+#mem-list li
+{
+    float:right;
+}
+
+ul li{
     display:inline-block;
     list-style-type:none;
-    float:right;
     padding:3px 3px;
 }
 
@@ -46,8 +55,6 @@ ul li
 {
     border:1px solid;
 }
-
-
 
 #machine-gui
 {
@@ -59,6 +66,17 @@ ul li
     width:300px;
     height: 580px;
     /* display:inline-block; */
+}
+
+#machine-list
+{
+    /* float:left; */
+    display:inline-block;
+    padding:0px;
+}
+#machine-list li
+{
+    float:left;
 }
 
 /* #goto */

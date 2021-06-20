@@ -17,6 +17,11 @@ window.onload = (()=>{
         fill_memory(a);
     };
 
+    window.set_pc = ()=>{
+        let a = document.getElementById("i_pc").value;
+        Machine.set_pc(a);
+    };
+
     window.save = ()=>{
         let elements = MemGUI.get_content();
         let a = elements.split("\n\n");
@@ -79,9 +84,13 @@ window.onload = (()=>{
         Machine.update_canvas();
     };
 
-    let app;
+    let app = window.setInterval(()=>{
+            Machine.read_program();
+            draw();
+    },128);
 
     window.run = ()=>{
+        window.stop();
         app = setInterval(()=>{
             Machine.read_program();
             draw();

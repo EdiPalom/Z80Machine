@@ -13,15 +13,31 @@
             </canvas>
 
             <div id="machine-gui">
-                <a class="button" onclick="run()">RUN PROGRAM</a>
-                <a class="button" onclick="stop()">STOP</a>
-                <a class="button" onclick="reset()">RESET</a>
+                <ul id="machine-list">
+                    <li> 
+                        <a class="button" onclick="run()">RUN</a>
+                    </li>
+                    <li>
+                        <a class="button" onclick="stop()">STOP</a>
+                    </li>
+                    <li>
+                        <a class="button" onclick="reset()">RESET</a>
+                    </li>
+                    <li>
+                        <a class="button" onclick="set_pc()">SET PC</a>
+                        <input type="tex" name="" id="i_pc" value="0x4000">
+                    </li>
+                </ul>
+                
+                <!-- <div id="pc&#45;gui"> -->
+                
+                <!-- </div> -->
             </div>
 
             <div id="bar">
                 <h3>MEMORY EDITOR</h3>
 
-                <ul>
+                <ul id="mem-list">
                     <li><a class="button" onclick="save()" >SAVE</a></li>
                     <li><a class="button" onclick="get_gaddress()" >GO</a></li>
                     <li><input type="text" name="" id="go" value="0x4000"></li>
