@@ -167,11 +167,32 @@ var Machine = function(){
         PC = get_address();
     };
 
+    const LDHLNN = ()=>{
+        let address = get_address();
+        memory[L] = address & 0xFF;
+        memory[H] = address >> 8 & 0xFF;
+        PC+=2;
+    };
+
+    const LDMEMHL = ()=>{
+        let address = get_address();
+        memory[address] = memory[L];
+        memory[address+1] = memory[H];
+        PC+=2;
+    };
+
+    const NOP = ()=>{
+        return;
+    };
+
     // instructions.push(LDA);
+    instructions[0x00] = NOP;
     instructions[0x3e] = LDAN;
     instructions[0x32] = LDNNA;
     instructions[0x18] = JRN;
     instructions[0xc3] = JPNN;
+    instructions[0x21] = LDHLNN;
+    instructions[0x22] = LDMEMHL;
 
     const read_program = ()=>{
         // let opcode = 0x00;
@@ -186,6 +207,10 @@ var Machine = function(){
         }catch(error){
             alert(`Error ${opcode.toString(16).toUpperCase()} in memory location ${PC.toString(16).toUpperCase()} is not an instruction`);
             window.stop();
+        }
+
+        if(PC >= MEMORY_SIZE){
+            PC = 0x4000;
         }
         
         // }while(opcode != 0x18);
