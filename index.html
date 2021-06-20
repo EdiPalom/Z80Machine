@@ -27,6 +27,10 @@
                         <a class="button" onclick="set_pc()">SET PC</a>
                         <input type="tex" name="" id="i_pc" value="0x4000">
                     </li>
+                    <li>
+                        <a class="button" onclick="set_ups()">SET UPS</a>
+                        <input type="tex" name="" id="i_ups" value="60">
+                    </li>
                 </ul>
                 
                 <!-- <div id="pc&#45;gui"> -->
@@ -54,6 +58,9 @@
         </div>
 
         <script type="module" src="machine.js"></script>
+        <script type="module" src="memgui.js"></script>
+        <script type="module" src="mainloop.js"></script>
+        <!-- <script type="text/javascript" src="controls.js"></script> -->
         <script type="module" src="code.js"></script>
     </body>
 </html>
