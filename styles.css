@@ -117,6 +117,7 @@ ul li
 .container
 {
     display: block;
-    width:100%;
+    max-width:1290px;
+
     /* height:1000px; */
 }

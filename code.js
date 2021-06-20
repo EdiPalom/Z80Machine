@@ -10,39 +10,64 @@ window.onload = (()=>{
     // let mac = Machine("Hello");
     //
     // MemGUI.fill(Machine.get_memory(0x4000),0x4000);
-    show_memory(0x4000);
-    draw();
+    start_machine();
 
     window.get_gaddress = ()=>{
         let a = document.getElementById("go").value;
-        show_memory(a);
+        fill_memory(a);
     };
 
     window.save = ()=>{
         let elements = MemGUI.get_content();
         let a = elements.split("\n\n");
 
-        let address = parseInt(a[0],16);
-        let memory = a.splice(1,a.length);
-
-        let bytes = [];
-
-        for(let i = 0; i < memory.length; i+=2)
+        for(let i = 0; i < 3; i++)
         {
-            let bt = memory[i] + memory[i+1];
-
-            bytes.push(parseInt(bt,16));
+            load_into_memory(a);
         }
-
-        Machine.set_memory(address,bytes);
-
     };
+
+    function load_into_memory(a,index){
+
+            let memory = a.splice(0,33);
+
+            let address = parseInt(memory[0],16);
+
+            memory.splice(0,1);
+
+            let bytes = [];
+
+            for(let i = 0; i < memory.length; i+=2)
+            {
+                let bt = memory[i] + memory[i+1];
+
+                bytes.push(parseInt(bt,16));
+            }
+
+            Machine.set_memory(address,bytes);
+    }
 
     function show_memory(address)
     {
         address = Number(address);
         MemGUI.fill(Machine.get_memory(address),address);
     };
+
+    function fill_memory(address)
+    {
+        address = Number(address);
+        MemGUI.reset();
+        show_memory(address);
+        show_memory(address + 0x10);
+        show_memory(address + 0x20);
+    }
+
+    function start_machine()
+    {
+        Machine.reset();
+        fill_memory(0x4000);
+        draw();
+    }
 
     // window.run = ()=>{
     //     Machine.read_program();
@@ -69,9 +94,7 @@ window.onload = (()=>{
 
     window.reset = ()=>{
         stop();
-        Machine.reset();
-        draw();
-        run();
+        start_machine();
     };
 })();
 

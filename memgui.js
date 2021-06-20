@@ -2,6 +2,10 @@ var MemGUI = function()
 {
     let surface = document.querySelector("#memdisplay");
 
+    surface.innerHTML = "";
+
+    let tab_counter = 0;
+
     const dec_to_hex = (n)=>{
         if(n < 10)
         {
@@ -29,15 +33,15 @@ var MemGUI = function()
 
     }
 
-    const get_focus= (t_i,i)=>{
+    const get_focus= (id,t_i,i)=>{
         if(i == '0')
         {
-            surface.children[Number(t_i)+1].children[1].contentEditable = 'true';
-            surface.children[Number(t_i)+1].children[1].focus();
+            surface.children[Number(id)].children[Number(t_i)+1].children[1].contentEditable = 'true';
+            surface.children[Number(id)].children[Number(t_i)+1].children[1].focus();
         }else
         {
-            surface.children[Number(t_i)+2].children[0].contentEditable = 'true';
-            surface.children[Number(t_i)+2].children[0].focus();
+            surface.children[Number(id)].children[Number(t_i)+2].children[0].contentEditable = 'true';
+            surface.children[Number(id)].children[Number(t_i)+2].children[0].focus();
         }
         // surface.children[1].children[0].click();
     }
@@ -46,6 +50,7 @@ var MemGUI = function()
         let p = document.createElement("input"); //"<p id=" + id + ";h" + ">" + a[0] + "</div>";
         p.id = id;
         p.setAttribute('index',index);
+        p.setAttribute('key_counter',0);
         // let text = document.createTextNode()
         // p.textContent = content;
         p.value = content;
@@ -60,25 +65,40 @@ var MemGUI = function()
             // if(p.contentEditable)
             // p.textContent = "";
             p.value="";
+
+            let c = Number(p.getAttribute('key_counter'));
+            c += 1;
+            p.setAttribute('key_counter',c);
         };
 
         p.onkeyup = ()=>{
-            // p.contentEditable = false;
-            // p.textContent = p.innerText.toUpperCase();
+            let keycode = event.which || event.keyCode;
+        
             p.value = p.value.toUpperCase();
-
-            // let text = p.textContent;
             let text = p.value;
-            if(text != "A" && text != "B" && text != "C" && text != "D" && text != "E" && text != "F" && text != "0" && text != "1" && text != "2" && text != "3" && text != "4" && text != "5" && text != "6" && text != "7" && text != "8" && text != "9")
+
+            if(text != "A" && text != "B" && text != "C" && text != "D" && text != "E" && text != "F" && text != "0" && text != "1" && text != "2" && 
+                text != "3" && text != "4" && text != "5" && text != "6" && text != "7" && text != "8" && text != "9")
             {
                 p.style.backgroundColor = "red";
+
+                p.setAttribute("key_counter",0);
             }else
             {
-                p.style.backgroundColor = "white";
+                if((keycode >= 65 && keycode <= 70)||(keycode >= 48 && keycode <= 57))
+                {
+                    p.style.backgroundColor = "white";
+
+                    if(Number(p.getAttribute("key_counter"))<2)
+                    {
+                        go_to_next_element(p.parentNode.parentNode.id,p.parentNode.getAttribute('t_index'),p.getAttribute('index'));
+                        p.setAttribute("key_counter",0);
+                    }else
+                    {
+                        p.setAttribute("key_counter",1);
+                    }
+                }
             }
-            
-            // console.log(p);
-            go_to_next_element(p.parentNode.getAttribute('t_index'),p.getAttribute('index'));
         };
 
         p.onmouseover = () =>
@@ -86,12 +106,6 @@ var MemGUI = function()
             if(p.style.backgroundColor != "red")
                 p.style.backgroundColor = "#3d8a47";
             // p.contentEditable = true;
-        }
-
-        p.onfocus = () =>
-        {
-            // p.contentEditable = true;
-            p.style.backgroundColor = "#00ff00";
         }
 
         p.onmouseleave = () =>
@@ -107,35 +121,62 @@ var MemGUI = function()
         let p = document.createElement("P"); //"<p id=" + id + ";h" + ">" + a[0] + "</div>";
         p.id = id;
         p.setAttribute('index',index);
+        p.setAttribute('key_counter',0);
+
         // let text = document.createTextNode()
         p.textContent = content;
         // p.style.width = "16px";
-        p.contentEditable = false;
+        // p.contentEditable = false;
 
         p.onclick = ()=>{
+            p.focus();
             p.contentEditable = true;
         };
 
         p.onkeypress = ()=>{
             // if(p.contentEditable)
+            //
+            // let keycode = event.which || event.keyCode;
+            // if(x)
+            // if((keycode >= 97 && keycode <= 102) || (keycode >= 48 && keycode <= 57))
             p.textContent = "";
+            let c = Number(p.getAttribute('key_counter'));
+            c += 1;
+            p.setAttribute('key_counter',c);
+            // let counter = 0;
+            // if(event)
+            //     counter+=1;
+            // console.log(p.getAttribute('key_counter'));
         };
 
         p.onkeyup = ()=>{
+
+            let keycode = event.which || event.keyCode;
+            // console.log(x);
             p.contentEditable = false;
             p.textContent = p.innerText.toUpperCase();
 
             let text = p.textContent;
-            if(text != "A" && text != "B" && text != "C" && text != "D" && text != "E" && text != "F" && text != "0" && text != "1" && text != "2" && text != "3" && text != "4" && text != "5" && text != "6" && text != "7" && text != "8" && text != "9")
+
+            if(text != "A" && text != "B" && text != "C" && text != "D" && text != "E" && text != "F" && text != "0" && text != "1" && text != "2" && 
+                text != "3" && text != "4" && text != "5" && text != "6" && text != "7" && text != "8" && text != "9")
             {
                 p.style.backgroundColor = "red";
+
+                p.setAttribute("key_counter",0);
             }else
             {
                 p.style.backgroundColor = "white";
             }
-            
-            // console.log(p);
-            get_focus(p.parentNode.getAttribute('t_index'),p.getAttribute('index'));
+
+            if(Number(p.getAttribute('key_counter')) < 2)
+            {
+                get_focus(p.parentNode.parentNode.id,p.parentNode.getAttribute('t_index'),p.getAttribute('index'));
+                p.setAttribute("key_counter",0);
+            }else
+            {
+                p.setAttribute("key_counter",1);
+            }
         };
 
         p.onmouseover = () =>
@@ -143,31 +184,35 @@ var MemGUI = function()
             if(p.style.backgroundColor != "red")
                 p.style.backgroundColor = "#3d8a47";
             p.contentEditable = true;
+            // p.focus();
         }
 
         p.onfocus = () =>
         {
             // p.contentEditable = true;
-            p.style.backgroundColor = "#00ff00";
+            // p.style.backgroundColor = "#00ff00";
         }
 
         p.onmouseleave = () =>
         {
             if(p.style.backgroundColor != "red")
+            {
                 p.style.backgroundColor = "white";
-            p.contentEditable = false;
+            }
+            // p.contentEditable = false;
         }
 
         return p;
     }
 
     const fill = (memory,address)=>{
-        surface.innerHTML = "";
-      
+        let div = document.createElement("div");
+        div.id = tab_counter;
+
         let p = document.createElement("P");
         p.textContent = address.toString(16);
         // let p = "<p>" + address.toString(16) + "</p>";
-        surface.appendChild(p);
+        div.appendChild(p);
 
         memory.forEach(
             (element,index)=>{
@@ -190,9 +235,17 @@ var MemGUI = function()
                 let para2 = create_paragraph(id,1,a[1]);
                 b.appendChild(para2);
 
-                surface.appendChild(b);
+                div.appendChild(b);
             });
+        surface.appendChild(div);
+        tab_counter += 1;
     };
+
+    const reset=()=>
+    {
+        surface.innerHTML = "";
+        tab_counter = 0;
+    }
 
     const get_content = ()=>
     {
@@ -201,7 +254,8 @@ var MemGUI = function()
 
     return{
         fill,
-        get_content
+        get_content,
+        reset
     }
 
 }();

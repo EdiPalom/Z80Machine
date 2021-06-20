@@ -39,8 +39,9 @@ var Machine = function(){
     let instructions = []
 
     const init_machine = ()=>{
-        for(let i = 0; i < MEMORY_SIZE; i++)
+        for(let i = 0x4000; i < MEMORY_SIZE; i++)
             memory[i] = 0x00;
+        PC = 0x4000;
     };
 
     init_machine();
@@ -179,7 +180,13 @@ var Machine = function(){
         let opcode = memory[PC];
         // console.log(opcode,PC);
         PC += 1;
-        instructions[opcode]();
+
+        try{
+            instructions[opcode]()
+        }catch(error){
+            alert(`Error ${opcode.toString(16).toUpperCase()} in memory location ${PC.toString(16).toUpperCase()} is not an instruction`);
+            window.stop();
+        }
         
         // }while(opcode != 0x18);
 
