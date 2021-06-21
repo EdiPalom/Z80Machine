@@ -24,12 +24,12 @@
                         <a class="button" onclick="reset()">RESET</a>
                     </li>
                     <li>
-                        <a class="button" onclick="set_pc()">SET PC</a>
-                        <input type="tex" name="" id="i_pc" value="0x4000">
+                        <a class="button" onclick="check_input(set_pc,'i_pc')">SET PC</a>
+                        <input type="tex" name="" id="i_pc" maxlength="4" value="4000">
                     </li>
                     <li>
-                        <a class="button" onclick="set_ups()">SET UPS</a>
-                        <input type="tex" name="" id="i_ups" value="60">
+                        <a class="button" onclick="check_input(set_ups,'i_ups')">SET UPS</a>
+                        <input type="tex" name="" id="i_ups" value="30" maxlength="2">
                     </li>
                 </ul>
                 
@@ -43,8 +43,8 @@
 
                 <ul id="mem-list">
                     <li><a class="button" onclick="save()" >SAVE</a></li>
-                    <li><a class="button" onclick="get_gaddress()" >GO</a></li>
-                    <li><input type="text" name="" id="go" value="0x4000"></li>
+                    <li><a class="button" onclick="check_input(get_gaddress,'go')" >GO</a></li>
+                    <li><input type="text" name="" id="go" value="4000" maxlength="4"></li>
                     <li style="padding-top:5px;">GO TO</li>
                 </ul>
             </div>

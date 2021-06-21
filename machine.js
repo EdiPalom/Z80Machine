@@ -209,7 +209,7 @@ var Machine = function(){
             window.stop();
         }
 
-        if(PC >= MEMORY_SIZE){
+        if(PC >= 0xc000){
             PC = 0x4000;
         }
         
@@ -235,7 +235,9 @@ var Machine = function(){
     };
 
     const set_pc = (address)=>{
-        PC = Number(address);
+        address = parseInt(address,16);
+        if(address >= 0x4000 && address < 0xc000)
+            PC = Number(address);
     };
     
     return {

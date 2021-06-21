@@ -3,19 +3,17 @@ import {Machine} from './machine'
 import {MemGUI} from './memgui'
 import {MainLoop} from './mainloop';
 
-window.get_gaddress = ()=>{
-    let a = document.getElementById("go").value;
+window.get_gaddress = (a)=>{
     fill_memory(a);
 };
 
-window.set_pc = ()=>{
-    let a = document.getElementById("i_pc").value;
+window.set_pc = (a)=>{
     Machine.set_pc(a);
 };
 
-window.set_ups = ()=>{
-    let a = document.getElementById("i_ups").value;
-    MainLoop.set_ups(Number(a));
+window.set_ups = (a)=>{
+
+    MainLoop.set_ups(a);
 };
 
 window.save = ()=>{
@@ -27,6 +25,27 @@ window.save = ()=>{
         load_into_memory(a);
     }
 };
+
+window.run = ()=>{
+    MainLoop.run();
+}
+
+window.stop = ()=>{
+    MainLoop.stop();
+};
+
+window.reset = ()=>{
+    start_machine();
+};
+
+window.check_input = (callback,id)=>{
+    let a = Number(document.getElementById(id).value);
+    
+    if(Number.isNaN(a))
+        alert(`Error ${document.getElementById(id).value} is not a number`);
+    else
+        callback(a);
+}
 
 function load_into_memory(a,index){
 
@@ -56,7 +75,7 @@ function show_memory(address)
 
 function fill_memory(address)
 {
-    address = Number(address);
+    address = parseInt(address,16);
     MemGUI.reset();
     show_memory(address);
     show_memory(address + 0x10);
@@ -66,7 +85,9 @@ function fill_memory(address)
 function start_machine()
 {
     Machine.reset();
-    fill_memory(0x4000);
+    fill_memory(4000);
+    Machine.raster();
+    Machine.update_canvas();
 };
 
 let App = {

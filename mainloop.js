@@ -42,7 +42,7 @@ var MainLoop = function(){
                 // console.log(typeof(delta_time));
                 mainLoop.previous_time = time_elapsed; 
 
-                console.log("APS: " + mainLoop.aps + " FPS: " + mainLoop.fps);
+                // console.log("APS: " + mainLoop.aps + " FPS: " + mainLoop.fps);
 
                 mainLoop.aps = 0;
                 mainLoop.fps = 0;
@@ -51,6 +51,7 @@ var MainLoop = function(){
 
         stop:()=>{
             window.cancelAnimationFrame(mainLoop.id);
+            mainLoop.id = null;
         },
 
         update:(current_time)=>{
@@ -69,9 +70,17 @@ var MainLoop = function(){
         MS_PER_SECOND = 1000 / ups;
     };
 
+    const run = ()=>{
+        if(mainLoop.id == null){
+            mainLoop.loop();
+        }
+    };
+
     return{
         loop:mainLoop.loop,
         set_ups,
+        stop:mainLoop.stop,
+        run,
     }
 }();
 
