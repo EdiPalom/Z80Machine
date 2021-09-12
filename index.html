@@ -31,8 +31,57 @@
                         <a class="button" onclick="check_input(set_ups,'i_ups')">SET UPS</a>
                         <input type="tex" name="" id="i_ups" value="30" maxlength="2">
                     </li>
+
+                    <!-- <li><a class="button" onclick="load_test()">RUN TEST</a></li> -->
+
+                    <li>
+                        <select id="binaries" name="bins" class="button">
+                          <option value="selection">Selection examples</option>
+                          <option value="bullet" id="bullet" onclick="load_binaries('bullet')">Bullet</option>
+                          <option value="face" id="face" onclick="load_binaries('face')">Face</option>
+                          <option value="progressbar" id="progress" onclick="load_binaries('progress')">Progress</option>
+                        </select>
+                    </li>
                 </ul>
-                
+
+                <table>
+                    <tr>
+                        <td>A</td>
+                        <td id = "reg0">00</td>
+                    </tr>
+                    <tr>
+                        <td>B</td>
+                        <td id = "reg1">00</td>
+                    </tr>
+                    <tr>
+                        <td>C</td>
+                        <td id = "reg2">00</td>
+                    </tr>
+                    <tr>
+                        <td>D</td>
+                        <td id = "reg3">00</td>
+                    </tr>
+                    <tr>
+                        <td>E</td>
+                        <td id="reg4">00</td>
+                    </tr>
+                    <tr>
+                        <td>F</td>
+                        <td id = "reg5">00</td>
+                    </tr>
+                    <tr>
+                        <td>H</td>
+                        <td id = "reg6">00</td>
+                    </tr>
+                    <tr>
+                        <td>L</td>
+                        <td id = "reg7">00</td>
+                    </tr>
+
+
+                </table>
+
+                <a class="button link" href="https://clrhome.org/table/" target="_blank">Z80 CODES</a>
                 <!-- <div id="pc&#45;gui"> -->
                 
                 <!-- </div> -->

@@ -13,6 +13,10 @@ p{
     margin:0px;
 }
 
+a{
+    text-decoration:none;
+}
+
 input
 {
     font-family:'8bit';
@@ -49,6 +53,38 @@ ul li{
     display:inline-block;
     list-style-type:none;
     padding:3px 3px;
+}
+
+table
+{
+    border-collapse: collapse;
+    width:50%;
+    margin-left:20%;
+    margin-bottom: 30px;
+}
+
+td{
+    border: 1px solid #dddddd;
+    text-align:center;
+    font-family:'8bit';
+    padding:8px;
+    color:steelblue;
+}
+
+tr:nth-child(even){
+    background-color:tan;
+}
+
+tr:nth-child(odd){
+    background-color: wheat;
+}
+
+.link{
+    margin:10px;
+}
+
+#binaries{
+    height:30px;
 }
 
 #canvas

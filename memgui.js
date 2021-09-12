@@ -1,3 +1,5 @@
+import {Machine} from './machine.js'
+
 var MemGUI = function()
 {
     let surface = document.querySelector("#memdisplay");
@@ -252,10 +254,31 @@ var MemGUI = function()
         return surface.innerText;
     };
 
+    const show_memory = (address)=>
+    {
+        address = Number(address);
+        fill(Machine.get_memory(address),address);
+    };
+
+    const fill_memory = (address)=>
+    {
+        address = parseInt(address,16);
+        reset();
+        show_memory(address);
+        show_memory(address + 0x10);
+        show_memory(address + 0x20);
+    };
+
+    const update = ()=>{
+        let m = document.getElementById("go").value;
+        fill_memory(m);
+    };
+
     return{
-        fill,
         get_content,
-        reset
+        reset,
+        fill_memory,
+        update
     }
 
 }();

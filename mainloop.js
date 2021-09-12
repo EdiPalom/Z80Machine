@@ -1,4 +1,5 @@
-import {Machine} from './machine'
+import {Machine} from './machine.js'
+import {MemGUI} from './memgui.js'
 
 var MainLoop = function(){
     let UPS = 30;
@@ -56,6 +57,8 @@ var MainLoop = function(){
 
         update:(current_time)=>{
             Machine.read_program();
+            Machine.update();
+            //MemGUI.update(); 
             mainLoop.aps++;
         },
 

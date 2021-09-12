@@ -20,14 +20,16 @@ var Machine = function(){
 
     const MEMORY_SIZE = 65536;
 
-    const A = 0x0000;
-    const B = 0x0001;
-    const C = 0x0002;
-    const D = 0x0003;
-    const E = 0x0004;
-    const F = 0x0005;
-    const H = 0x0006;
-    const L = 0x0007;
+    const A = 0;
+    const B = 1;
+    const C = 2;
+    const D = 3;
+    const E = 4;
+    const F = 5;
+    const H = 6;
+    const L = 7;
+
+    let SP = 0x1000;
 
     let PC = 0x4000;
 
@@ -185,29 +187,159 @@ var Machine = function(){
         return;
     };
 
+    const LDMEMHLN = ()=>{
+        let address = memory[H].toString(16).padStart(2,"0") + memory[L].toString(16).padStart(2,"0");
+        memory[parseInt(address,16)] = memory[PC];
+        PC+=1;
+    };
+
+    const LDLN = ()=>{
+        memory[L] = memory[PC];
+        PC+=1;
+    };
+
+    const INCL = ()=>{
+        //memory[L] += 1;
+        memory[L] = sum(memory[L],1);
+    };
+
+    const DECL = ()=>{
+        memory[L] = sum(memory[L],-1);
+//        memory[L] -= 1;
+//        memory[L] = sum(memory[L],-1);
+    };
+
+    const XORL = ()=>{
+        memory[L] = memory[L] ^ memory[L];
+    };
+
+    const CALL = ()=>{
+        let pc = PC + 2;
+        let low = pc & 0xff;
+        let high = pc >> 8 & 0xff;
+        memory[SP] = low;
+        SP+=1;
+        memory[SP] = high;
+//        console.log(`${PC} ${get_address()}`);
+        PC = get_address();
+        
+    };
+
+    const RET = ()=>{
+        let address = memory[SP];
+        SP-=1;
+        address = address << 8 | memory[SP];
+
+        PC = address;
+    };
+
+    let DECA = ()=>{
+        //memory[A] = memory[A] - 1;
+        memory[A] = sum(memory[A],-1);
+       // memory[A] -= 1;
+    };
+
+    let INCA = ()=>{
+        //memory[A]+=1;
+        memory[A] = sum(memory[A],1);
+    }
+
+    // const DEC = (reg) =>{
+    //     memory[reg] = sum(memory[reg],-1);
+    // };
+
+    const JPNZNN = ()=>{
+        //console.log((memory[F]>>6) & 0xff);
+        if((memory[F] >> 6) & 0xff)
+            PC = get_address();
+        else
+            PC+=2;
+    };
+
+    const zero_flag = (ac)=>{
+
+        let reg = ac ? 0x00 : 0x01;
+        
+        reg = reg<<6;
+        memory[F] = memory[F] | reg;
+    };
+
+    const sum = (reg,num)=>{
+        let r = reg + num;
+        zero_flag(r);
+        return r;
+    };
+
+    const INCMEMHL =()=> {
+        let a = memory[H].toString(16).padStart(2,"0") + memory[L].toString(16).padStart(2,"0");
+        let address = parseInt(a,16);
+        memory[address] = sum(memory[address],1);
+    };
+
+    const DECMEMHL =()=> {
+        let a = memory[H].toString(16).padStart(2,"0") + memory[L].toString(16).padStart(2,"0");
+        let address = parseInt(a,16);
+        memory[address] = sum(memory[address],-1);
+    };
+    
+          
+
     // instructions.push(LDA);
     instructions[0x00] = NOP;
-    instructions[0x3e] = LDAN;
-    instructions[0x32] = LDNNA;
     instructions[0x18] = JRN;
-    instructions[0xc3] = JPNN;
     instructions[0x21] = LDHLNN;
     instructions[0x22] = LDMEMHL;
+    instructions[0x2c] = INCL;
+    instructions[0x2d] = DECL;
+    instructions[0x2e] = LDLN;
+    instructions[0x32] = LDNNA;
+    instructions[0x34] = INCMEMHL;
+    instructions[0x35] = DECMEMHL;
+    instructions[0x36] = LDMEMHLN;
+    instructions[0x3e] = LDAN;
+    instructions[0x3c] = INCA;
+    instructions[0x3d] = DECA;
+    instructions[0xad] = XORL;
+    instructions[0xc2] = JPNZNN;
+    instructions[0xc3] = JPNN;    
+    //instructions[0xc9] = RET;    
+    //instructions[0xcd] = CALL;
 
     const read_program = ()=>{
         // let opcode = 0x00;
         // do
         // {
         let opcode = memory[PC];
-        // console.log(opcode,PC);
-        PC += 1;
+
+        PC += 1;                                
+        
+        switch(opcode)
+        {
+            case 201:
+            RET();
+            break;
+            
+            case 205:
+            CALL();
+            break;
+
+            default:
+            break;
+        }
+//       console.log(`${opcode} ${PC} ${SP}`);
+
+  
 
         try{
-            instructions[opcode]()
+            if(opcode != 201 && opcode != 205)
+                instructions[opcode]()
         }catch(error){
-            alert(`Error ${opcode.toString(16).toUpperCase()} in memory location ${PC.toString(16).toUpperCase()} is not an instruction`);
+            let pc = PC - 1;
+            alert(`Error ${opcode.toString(16).toUpperCase()} in memory location ${pc.toString(16).toUpperCase()} is not an instruction`);
             window.stop();
         }
+
+
 
         if(PC >= 0xc000){
             PC = 0x4000;
@@ -228,7 +360,7 @@ var Machine = function(){
     };
 
     const set_memory = (address,data)=>{
-        for(let i = 0; i < 16; i++)
+        for(let i = 0; i < data.length; i++)
         {
             memory[address+i] = data[i];
         }
@@ -239,12 +371,20 @@ var Machine = function(){
         if(address >= 0x4000 && address < 0xc000)
             PC = Number(address);
     };
+
+    const update = ()=>{
+        for(let i = 0; i < 8; i++){
+            let reg = document.getElementById("reg"+i);
+            reg.innerHTML = memory[i].toString(16);
+        }
+    };
     
     return {
         update_canvas,
         raster,
         get_memory,
         set_memory,
+        update,
         read_program,
         reset:init_machine,
         set_pc
